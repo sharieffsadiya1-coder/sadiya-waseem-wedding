@@ -1,472 +1,506 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [opened, setOpened] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [timeLeft, setTimeLeft] = useState({});
-  const audioRef = useRef(null);
-
+  const [time, setTime] = useState({});
+  
   useEffect(() => {
-    const target = new Date("2026-12-20T11:30:00+05:30");
+    const update = () => {
+      const difference = Math.max(
+        0,
+        new Date("2026-12-20T11:30:00+05:30").getTime() - Date.now()
+      );
 
-    const updateCountdown = () => {
-      const diff = target.getTime() - Date.now();
-      const safe = Math.max(0, diff);
-
-      setTimeLeft({
-        days: Math.floor(safe / 86400000),
-        hours: Math.floor((safe / 3600000) % 24),
-        minutes: Math.floor((safe / 60000) % 60),
-        seconds: Math.floor((safe / 1000) % 60),
+      setTime({
+        days: Math.floor(difference / 86400000),
+        hours: Math.floor(difference / 3600000) % 24,
+        minutes: Math.floor(difference / 60000) % 60,
+        seconds: Math.floor(difference / 1000) % 60
       });
     };
 
-    updateCountdown();
-    const timer = setInterval(updateCountdown, 1000);
+    update();
+    const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const toggleMusic = async () => {
-    if (!audioRef.current) return;
-
-    if (playing) {
-      audioRef.current.pause();
-      setPlaying(false);
-    } else {
-      try {
-        await audioRef.current.play();
-        setPlaying(true);
-      } catch {
-        alert("Please add your music file to the public folder first.");
-      }
-    }
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <main className="wedding">
-      <audio ref={audioRef} src="/music.mp3" loop />
+    <main className="site">
+      <div className="background-flower flower-one">✿</div>
+      <div className="background-flower flower-two">❀</div>
 
-      <div className="glow" />
+      {!opened && (
+        <div className="opening">
+          <div className="opening-frame">
+            <div className="top-flower">❀</div>
+            <p className="opening-label">THE WEDDING INVITATION</p>
+            <div className="opening-line">✦ ───────── ✦</div>
+            <p className="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
 
-      {!opened ? (
-        <section className="cover">
-          <div className="corner top-left">❧</div>
-          <div className="corner top-right">❧</div>
-          <div className="corner bottom-left">❧</div>
-          <div className="corner bottom-right">❧</div>
+            <div className="envelope">
+              <div className="envelope-flap">✧</div>
+              <div className="envelope-letter">
+                <span>S & W</span>
+              </div>
+            </div>
 
-          <div className="cover-content">
-            <p className="eyebrow">TOGETHER WITH OUR FAMILIES</p>
-            <div className="ornament">✦ ─── ❀ ─── ✦</div>
-            <p className="small-title">THE WEDDING CELEBRATION OF</p>
+            <h1 className="opening-names">
+              Sadiya <i>&</i> Waseem
+            </h1>
+            <p className="opening-date">20 DECEMBER 2026 · KOLAR</p>
 
-            <h1>Sadiya</h1>
-            <div className="ampersand">&</div>
-            <h1>Waseem</h1>
-
-            <div className="ornament">✦ ─── ❀ ─── ✦</div>
-            <p className="cover-date">20 · DECEMBER · 2026</p>
-
-            <button className="open-button" onClick={() => setOpened(true)}>
-              OPEN INVITATION <span>✧</span>
+            <button className="open-invitation" onClick={() => setOpened(true)}>
+              OPEN YOUR INVITATION <span>↗</span>
             </button>
-
-            <p className="bottom-note">A beautiful beginning, by the grace of Allah</p>
+            <p className="opening-footer">A NEW CHAPTER BEGINS</p>
           </div>
-        </section>
-      ) : (
-        <>
-          <header className="hero">
-            <p className="eyebrow">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-            <div className="ornament">✦ ❀ ✦</div>
-            <p className="small-title">WITH THE BLESSINGS OF ALLAH</p>
-            <h1>Sadiya <span>&</span> Waseem</h1>
-            <p className="hero-text">
-              Two hearts, one beautiful journey.
-              <br />
-              We invite you to celebrate our special day.
-            </p>
-            <div className="gold-line" />
-            <p className="cover-date">SUNDAY · 20 DECEMBER 2026</p>
-          </header>
-
-          <section className="invitation section">
-            <p className="eyebrow">A JOYOUS OCCASION</p>
-            <div className="ornament">❀</div>
-            <h2>With love & gratitude</h2>
-            <p>
-              With the blessings of Allah and the love of our families,
-              we request the pleasure of your company as we begin
-              our new chapter together.
-            </p>
-            <div className="names">Sadiya & Waseem</div>
-            <p className="dua">
-              May Allah bless our union with love, mercy and happiness.
-            </p>
-          </section>
-
-          <section className="countdown-section section">
-            <p className="eyebrow">SAVE THE DATE</p>
-            <h2>Counting down to forever</h2>
-            <div className="countdown">
-              {["days", "hours", "minutes", "seconds"].map((item) => (
-                <div className="count-box" key={item}>
-                  <strong>{timeLeft[item] ?? "00"}</strong>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-            <p className="date-line">20 December 2026 · 11:30 AM</p>
-          </section>
-
-          <section className="venue section">
-            <p className="eyebrow">JOIN US FOR THE CELEBRATION</p>
-            <div className="ornament">✧ ❀ ✧</div>
-            <h2>The Wedding</h2>
-            <h3>Kabba Convention Hall</h3>
-            <p>
-              St. Anne's High School, Near Bypass,
-              <br />
-              Kolar – 563101
-            </p>
-            <p className="date-line">Sunday, 20 December 2026</p>
-            <p className="date-line">11:30 AM</p>
-
-            <a
-              className="gold-button"
-              href="https://www.google.com/maps/search/?api=1&query=Kabba+Convention+Hall+St+Annes+High+School+Near+Bypass+Kolar+563101"
-              target="_blank"
-              rel="noreferrer"
-            >
-              VIEW LOCATION ↗
-            </a>
-          </section>
-
-          <section className="contact section">
-            <div className="ornament">❀</div>
-            <h2>We look forward to seeing you</h2>
-            <p>Your presence and duas mean the world to us.</p>
-            <p className="eyebrow">FOR ANY QUERIES</p>
-            <div className="contacts">
-              <a href="tel:+916360021841">+91 63600 21841</a>
-              <a href="tel:7893406576">7893406576</a>
-            </div>
-            <div className="ornament">✦ ─── ❀ ─── ✦</div>
-            <p className="footer-names">Sadiya & Waseem</p>
-            <p className="footer-date">20 · 12 · 2026</p>
-          </section>
-
-          <button className="music-button" onClick={toggleMusic}>
-            {playing ? "Ⅱ PAUSE MUSIC" : "♫ PLAY MUSIC"}
-          </button>
-        </>
+        </div>
       )}
+
+      <nav className="navigation">
+        <span className="nav-brand">S <i>&</i> W</span>
+        <div>
+          <button onClick={() => scrollTo("home")}>HOME</button>
+          <button onClick={() => scrollTo("story")}>INVITATION</button>
+          <button onClick={() => scrollTo("details")}>DETAILS</button>
+        </div>
+      </nav>
+
+      <section className="hero" id="home">
+        <div className="hero-inner">
+          <p className="overline">TOGETHER WITH OUR FAMILIES</p>
+          <div className="flower-divider">❀</div>
+          <p className="hero-small">WE INVITE YOU TO CELEBRATE THE WEDDING OF</p>
+          <h1>
+            Sadiya
+            <span>&</span>
+            Waseem
+          </h1>
+          <p className="hero-description">
+            Two souls, one beautiful journey.
+            <br />
+            A lifetime of love begins here.
+          </p>
+          <div className="hero-date">SUNDAY · 20 · DECEMBER · 2026</div>
+          <button className="discover" onClick={() => scrollTo("story")}>
+            DISCOVER OUR INVITATION ↓
+          </button>
+        </div>
+        <div className="hero-bottom">WITH LOVE & THE BLESSINGS OF ALLAH</div>
+      </section>
+
+      <section className="story section" id="story">
+        <p className="overline">A BEAUTIFUL BEGINNING</p>
+        <div className="flower-divider">✿</div>
+        <h2>Our special day</h2>
+        <p className="story-copy">
+          With the blessings of Allah and the love of our families,
+          we joyfully invite you to be part of a beautiful new chapter
+          as we begin our journey together.
+        </p>
+        <div className="couple-names">Sadiya <i>&</i> Waseem</div>
+        <div className="flower-divider">✧</div>
+        <p className="prayer">
+          May Allah bless our union with endless love, mercy,
+          understanding and happiness. Ameen.
+        </p>
+      </section>
+
+      <section className="countdown section">
+        <p className="overline">SAVE THE DATE</p>
+        <h2>Until forever begins</h2>
+        <div className="timer">
+          {["days", "hours", "minutes", "seconds"].map((unit) => (
+            <div className="timer-box" key={unit}>
+              <strong>{String(time[unit] ?? 0).padStart(2, "0")}</strong>
+              <span>{unit}</span>
+            </div>
+          ))}
+        </div>
+        <p className="countdown-date">20 DECEMBER 2026 · 11:30 AM</p>
+      </section>
+
+      <section className="details section" id="details">
+        <p className="overline">THE CELEBRATION</p>
+        <div className="flower-divider">❀</div>
+        <h2>Wedding details</h2>
+        <div className="detail-card">
+          <div className="detail-icon">✧</div>
+          <p className="detail-label">THE DATE</p>
+          <h3>Sunday, 20 December 2026</h3>
+          <p>11:30 in the morning</p>
+          <div className="detail-separator">✦</div>
+          <div className="detail-icon">⌖</div>
+          <p className="detail-label">THE VENUE</p>
+          <h3>Kabba Convention Hall</h3>
+          <p>
+            St. Anne's High School, Near Bypass,
+            <br />
+            Kolar – 563101
+          </p>
+          <a
+            className="location-button"
+            href="https://www.google.com/maps/search/?api=1&query=Kabba+Convention+Hall+St+Annes+High+School+Near+Bypass+Kolar+563101"
+            target="_blank"
+            rel="noreferrer"
+          >
+            FIND US ON MAP ↗
+          </a>
+        </div>
+      </section>
+
+      <section className="closing section">
+        <div className="flower-divider">✿</div>
+        <p className="overline">YOUR PRESENCE IS OUR PRESENT</p>
+        <h2>Celebrate with us</h2>
+        <p>
+          We cannot wait to share this special day with you.
+          Your presence and duas will make it even more meaningful.
+        </p>
+        <div className="closing-names">Sadiya & Waseem</div>
+        <p className="closing-date">20 · 12 · 2026</p>
+        <p className="closing-blessing">WITH LOVE, ALWAYS</p>
+        <div className="flower-divider">✦ ─── ❀ ─── ✦</div>
+      </section>
+
+      <footer>
+        MADE WITH LOVE FOR OUR SPECIAL DAY
+        <br />
+        SADIYA & WASEEM · 2026
+      </footer>
 
       <style jsx global>{`
         * { box-sizing: border-box; }
-
-        body {
-          margin: 0;
-          background: #f6eee5;
-          color: #4c1826;
+        html { scroll-behavior: smooth; }
+        body { margin: 0; background: #f8f2e9; }
+        button { font: inherit; }
+        .site {
+          background: #f8f2e9;
+          color: #4d3433;
           font-family: Georgia, "Times New Roman", serif;
-        }
-
-        .wedding {
-          min-height: 100vh;
           overflow: hidden;
-          background: #f6eee5;
           position: relative;
         }
-
-        .cover {
-          min-height: 100vh;
+        .opening {
+          position: fixed;
+          inset: 0;
+          z-index: 20;
+          background: radial-gradient(circle, #fffaf0, #ead9c5);
           display: flex;
           align-items: center;
           justify-content: center;
-          text-align: center;
-          padding: 55px 22px;
-          position: relative;
-          color: #f8e9d1;
-          background:
-            radial-gradient(ellipse at center, #782d40 0%, #4c1728 65%, #2e101b 100%);
+          padding: 25px;
+          animation: fadeIn .8s ease;
         }
-
-        .cover:before, .cover:after {
+        .opening-frame {
+          position: relative;
+          border: 1px solid #b79768;
+          outline: 1px solid #b79768;
+          outline-offset: 7px;
+          width: min(570px, 90vw);
+          min-height: 590px;
+          padding: 45px 18px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .top-flower { font-size: 38px; color: #a87952; margin-bottom: 18px; }
+        .opening-label, .overline {
+          font: 10px Arial, sans-serif;
+          letter-spacing: 4px;
+          color: #9c7854;
+        }
+        .opening-line, .flower-divider { color: #b18b60; margin: 22px 0; }
+        .bismillah { color: #8c6549; font-size: 21px; }
+        .envelope {
+          width: 140px;
+          height: 95px;
+          background: #6b263d;
+          position: relative;
+          margin: 25px auto 15px;
+          box-shadow: 0 8px 20px #4d253522;
+        }
+        .envelope:before, .envelope:after {
           content: "";
           position: absolute;
-          inset: 18px;
-          border: 1px solid #c8a66c;
-          pointer-events: none;
+          bottom: 0;
+          border-style: solid;
+          border-width: 48px 70px;
+          border-color: transparent transparent #853c50 transparent;
         }
-
-        .cover:after {
-          inset: 25px;
-          border-color: rgba(200,166,108,.35);
-        }
-
-        .corner {
+        .envelope:after { border-color: transparent #762d43 #762d43 transparent; }
+        .envelope-flap {
           position: absolute;
-          color: #d8b77c;
-          font-size: 54px;
-          line-height: 1;
+          top: 0;
+          left: 0;
+          width: 0;
+          height: 0;
+          border-left: 70px solid transparent;
+          border-right: 70px solid transparent;
+          border-top: 55px solid #a65e6d;
+          z-index: 2;
+          color: #f4d9a9;
+          text-align: center;
+          padding-top: 7px;
         }
-
-        .top-left { top: 35px; left: 35px; }
-        .top-right { top: 35px; right: 35px; transform: scaleX(-1); }
-        .bottom-left { bottom: 35px; left: 35px; transform: scaleY(-1); }
-        .bottom-right { bottom: 35px; right: 35px; transform: scale(-1); }
-
-        .cover-content { max-width: 650px; width: 100%; position: relative; z-index: 1; }
-
-        .eyebrow {
-          font-family: Arial, sans-serif;
-          letter-spacing: 4px;
-          font-size: 10px;
-          line-height: 1.8;
-          color: #ad8751;
+        .envelope-letter {
+          position: absolute;
+          top: 15px;
+          left: 48px;
+          z-index: 1;
+          color: #b58c59;
+          background: #fff5e5;
+          width: 44px;
+          height: 65px;
+          padding-top: 20px;
+          font-size: 11px;
         }
-
-        .cover .eyebrow, .cover .small-title { color: #e1c798; }
-
-        .small-title {
-          font-family: Arial, sans-serif;
-          letter-spacing: 3px;
-          font-size: 10px;
-          margin: 25px 0;
-        }
-
-        .cover h1 {
-          font-size: clamp(58px, 12vw, 100px);
+        .opening-names {
+          font-size: clamp(34px, 8vw, 52px);
           font-weight: normal;
           font-style: italic;
-          line-height: .95;
-          margin: 12px 0;
-          color: #f5dfbd;
+          color: #64273a;
+          margin: 15px 0 5px;
         }
-
-        .ampersand {
-          font-size: 36px;
-          font-style: italic;
-          color: #d7b77d;
-          margin: 15px 0;
-        }
-
-        .ornament {
-          color: #b88c51;
-          font-size: 22px;
-          margin: 25px 0;
-          letter-spacing: 4px;
-        }
-
-        .cover .ornament { color: #d9b879; }
-
-        .cover-date {
-          letter-spacing: 4px;
-          font-family: Arial, sans-serif;
-          font-size: 11px;
-          color: #e7d1ad;
-          margin: 28px 0;
-        }
-
-        .open-button, .gold-button {
-          display: inline-block;
-          border: 1px solid #d5b477;
-          background: transparent;
-          color: #f3dfbd;
-          padding: 16px 30px;
+        .opening-names i { color: #b18b60; font-size: 30px; }
+        .opening-date, .hero-date {
+          font: 10px Arial, sans-serif;
           letter-spacing: 3px;
-          font-size: 10px;
+          color: #9c7854;
+          margin: 20px 0;
+        }
+        .open-invitation, .discover, .location-button {
+          border: 1px solid #9e7952;
+          padding: 15px 23px;
+          background: #672b40;
+          color: #fff2df;
+          font: 10px Arial, sans-serif;
+          letter-spacing: 2px;
           cursor: pointer;
           text-decoration: none;
           transition: .3s;
         }
-
-        .open-button:hover, .gold-button:hover {
-          background: #d5b477;
-          color: #421725;
+        .open-invitation:hover, .discover:hover, .location-button:hover {
+          background: #9d704f;
         }
-
-        .open-button span { margin-left: 12px; }
-        .bottom-note { color: #d7bd9c; font-size: 12px; font-style: italic; margin-top: 40px; }
-
+        .opening-footer {
+          color: #a58a6b;
+          font: 9px Arial, sans-serif;
+          letter-spacing: 3px;
+          margin-top: 35px;
+        }
+        .navigation {
+          height: 65px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 7%;
+          background: #fffaf2;
+          border-bottom: 1px solid #e7d8c4;
+        }
+        .nav-brand { color: #682c40; font-size: 23px; font-style: italic; }
+        .nav-brand i { color: #b18b60; }
+        .navigation button {
+          border: 0;
+          background: none;
+          color: #765d4c;
+          font: 9px Arial, sans-serif;
+          letter-spacing: 1px;
+          padding: 10px;
+          cursor: pointer;
+        }
         .hero {
+          min-height: 690px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
           text-align: center;
-          padding: 100px 22px 90px;
-          color: #f5e6d0;
-          background: linear-gradient(140deg, #35121f, #702b3e, #3b1422);
+          padding: 90px 20px 45px;
           position: relative;
+          color: #fff1de;
+          background:
+            radial-gradient(ellipse at 50% 45%, #854a58, transparent 65%),
+            linear-gradient(135deg, #3e1929, #6a2c40 55%, #351421);
         }
-
+        .hero:before {
+          content: "";
+          position: absolute;
+          inset: 20px;
+          border: 1px solid #c4a477;
+          pointer-events: none;
+        }
+        .hero-inner { position: relative; z-index: 1; }
+        .hero .overline, .hero-small { color: #e2c9a7; }
+        .hero-small {
+          font: 9px Arial, sans-serif;
+          letter-spacing: 3px;
+          margin: 30px 0;
+        }
         .hero h1 {
-          font-size: clamp(42px, 9vw, 78px);
-          font-weight: normal;
+          font-size: clamp(64px, 13vw, 110px);
           font-style: italic;
-          margin: 22px 0;
-          color: #f3dfbd;
+          font-weight: normal;
+          line-height: .95;
+          margin: 15px 0;
+          color: #f8e6c9;
         }
-
-        .hero h1 span { color: #c9a66b; }
-        .hero-text { color: #ead8c0; font-size: 16px; line-height: 2; }
-        .gold-line { width: 75px; height: 1px; background: #c9a66b; margin: 30px auto; }
-
-        .section {
-          text-align: center;
-          padding: 75px 22px;
-          max-width: 850px;
-          margin: auto;
+        .hero h1 span {
+          display: block;
+          color: #d0aa73;
+          font-size: 43px;
+          margin: 18px;
         }
-
+        .hero-description { line-height: 2; color: #f0ddc5; font-size: 15px; }
+        .hero-date { color: #e7cda9; margin: 30px 0; }
+        .discover { background: transparent; color: #f7e7d0; }
+        .hero-bottom {
+          position: absolute;
+          bottom: 30px;
+          font: 9px Arial, sans-serif;
+          letter-spacing: 3px;
+          color: #d7b991;
+        }
+        .section { text-align: center; padding: 90px 22px; }
         .section h2 {
-          font-size: clamp(30px, 6vw, 43px);
-          font-weight: normal;
+          font-size: clamp(32px, 7vw, 49px);
           font-style: italic;
-          color: #541d2d;
-          margin: 15px 0 25px;
+          font-weight: normal;
+          color: #672b40;
+          margin: 15px 0 30px;
         }
-
-        .invitation p:not(.eyebrow):not(.dua) {
-          max-width: 570px;
-          margin: 20px auto;
-          color: #755c52;
+        .story { max-width: 850px; margin: auto; }
+        .story-copy, .prayer, .closing > p:not(.overline) {
+          color: #786459;
+          max-width: 580px;
+          margin: 25px auto;
           font-size: 16px;
-          line-height: 2;
+          line-height: 2.1;
         }
-
-        .names {
-          color: #9c7040;
-          font-size: 35px;
+        .couple-names, .closing-names {
+          font-size: 38px;
+          color: #9b7049;
           font-style: italic;
           margin: 30px 0;
         }
-
-        .dua { color: #9c7040; font-style: italic; font-size: 14px; }
-
-        .countdown-section {
-          max-width: none;
-          background: #eadbc9;
-          padding: 75px 15px;
-        }
-
         .countdown {
+          background: #eadcc9;
+          padding: 80px 15px;
+        }
+        .timer {
           display: flex;
           justify-content: center;
           flex-wrap: wrap;
-          gap: 12px;
+          gap: 13px;
           margin: 35px auto;
         }
-
-        .count-box {
+        .timer-box {
           width: 105px;
-          padding: 20px 8px;
-          border: 1px solid #b38b59;
-          background: rgba(255,255,255,.25);
+          padding: 22px 8px;
+          border: 1px solid #b38b60;
+          background: #f8f0e5;
         }
-
-        .count-box strong {
+        .timer-box strong {
           display: block;
-          font-size: 35px;
+          font-size: 38px;
           font-weight: normal;
-          color: #581e30;
+          color: #692b40;
         }
-
-        .count-box span {
+        .timer-box span {
           display: block;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          font: 9px Arial, sans-serif;
-          color: #88694c;
           margin-top: 8px;
-        }
-
-        .date-line {
-          color: #946b43;
+          color: #9a7857;
+          text-transform: uppercase;
+          font: 9px Arial, sans-serif;
           letter-spacing: 2px;
-          font-size: 12px;
-          margin: 20px 0;
         }
-
-        .venue {
-          padding-top: 90px;
-          padding-bottom: 90px;
+        .countdown-date {
+          color: #8e6849;
+          font: 10px Arial, sans-serif;
+          letter-spacing: 3px;
         }
-
-        .venue h3 {
-          color: #8e633d;
-          font-size: 24px;
+        .details { max-width: 850px; margin: auto; }
+        .detail-card {
+          max-width: 570px;
+          margin: 35px auto 0;
+          padding: 40px 20px;
+          border: 1px solid #c2a27a;
+          outline: 1px solid #c2a27a;
+          outline-offset: 6px;
+          background: #fffaf2;
+        }
+        .detail-icon { font-size: 27px; color: #ad8658; }
+        .detail-label {
+          color: #9b7955;
+          font: 10px Arial, sans-serif;
+          letter-spacing: 3px;
+          margin-top: 12px;
+        }
+        .detail-card h3 {
           font-weight: normal;
-          margin-top: 35px;
+          color: #692b40;
+          font-size: 22px;
+          margin: 20px 0 10px;
         }
-
-        .venue p:not(.eyebrow):not(.date-line) {
-          color: #755c52;
+        .detail-card p:not(.detail-label) {
+          color: #806c5b;
+          font-size: 14px;
           line-height: 2;
         }
-
-        .gold-button {
-          background: #571d30;
-          color: #f7e8d1;
-          margin-top: 20px;
+        .detail-separator { color: #b28c61; margin: 30px; }
+        .location-button { display: inline-block; margin-top: 20px; }
+        .closing {
+          background: #4b1d30;
+          color: #f8e8d0;
         }
-
-        .contact {
-          max-width: none;
-          background: #3d1524;
-          color: #f4e5cf;
-          padding: 75px 20px;
+        .closing h2 { color: #f3dfc0; }
+        .closing .overline, .closing .flower-divider { color: #d3b17f; }
+        .closing > p:not(.overline) { color: #e4ceb1; }
+        .closing-names { color: #e9c994; }
+        .closing-date, .closing-blessing {
+          font: 10px Arial, sans-serif !important;
+          letter-spacing: 3px;
         }
-
-        .contact h2 { color: #f1dfc2; }
-        .contact p { color: #d8c0a1; line-height: 1.8; }
-        .contact .eyebrow { margin-top: 35px; }
-
-        .contacts {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 20px;
-          margin: 25px 0;
+        footer {
+          text-align: center;
+          padding: 25px 10px;
+          color: #a58b70;
+          background: #f8f2e9;
+          font: 9px Arial, sans-serif;
+          letter-spacing: 2px;
+          line-height: 2.2;
         }
-
-        .contacts a {
-          color: #f1d9ae;
-          border-bottom: 1px solid #b38b59;
-          padding: 8px;
-          text-decoration: none;
+        .background-flower {
+          position: absolute;
+          color: #b58b64;
+          opacity: .12;
+          font-size: 100px;
+          pointer-events: none;
         }
-
-        .footer-names { font-size: 30px; font-style: italic; }
-        .footer-date { letter-spacing: 4px; font-size: 10px; }
-
-        .music-button {
-          position: fixed;
-          bottom: 18px;
-          right: 18px;
-          z-index: 5;
-          border: 1px solid #d4b47c;
-          border-radius: 30px;
-          padding: 13px 19px;
-          color: #f5e4c8;
-          background: #501a2c;
-          font-size: 10px;
-          letter-spacing: 1px;
-          cursor: pointer;
-          box-shadow: 0 5px 20px #0002;
+        .flower-one { top: 900px; left: -35px; }
+        .flower-two { top: 1800px; right: -30px; }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-
-        @media (max-width: 500px) {
-          .corner { font-size: 35px; }
-          .top-left { top: 35px; left: 28px; }
-          .top-right { top: 35px; right: 28px; }
-          .bottom-left { bottom: 35px; left: 28px; }
-          .bottom-right { bottom: 35px; right: 28px; }
-          .section { padding: 60px 20px; }
-          .count-box { width: 76px; padding: 16px 5px; }
-          .count-box strong { font-size: 27px; }
-          .hero { padding: 80px 18px; }
+        @media(max-width: 550px) {
+          .opening-frame { min-height: 520px; }
+          .navigation { padding: 0 12px; }
+          .navigation button { padding: 8px 5px; font-size: 8px; }
+          .hero { min-height: 650px; }
+          .section { padding: 65px 20px; }
+          .timer-box { width: 75px; padding: 16px 5px; }
+          .timer-box strong { font-size: 28px; }
+          .timer-box span { font-size: 8px; letter-spacing: 1px; }
         }
       `}</style>
     </main>
