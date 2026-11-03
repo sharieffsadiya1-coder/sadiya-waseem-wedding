@@ -3,411 +3,472 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function WeddingPage() {
+export default function Home() {
   const [opened, setOpened] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
-
+  const [timeLeft, setTimeLeft] = useState({});
   const audioRef = useRef(null);
 
   useEffect(() => {
-    const weddingDate = new Date("2026-12-20T11:30:00+05:30");
+    const target = new Date("2026-12-20T11:30:00+05:30");
 
     const updateCountdown = () => {
-      const difference = weddingDate.getTime() - Date.now();
-      const remaining = Math.max(0, difference);
+      const diff = target.getTime() - Date.now();
+      const safe = Math.max(0, diff);
 
       setTimeLeft({
-        days: Math.floor(remaining / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((remaining / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((remaining / (1000 * 60)) % 60),
-        seconds: Math.floor((remaining / 1000) % 60)
+        days: Math.floor(safe / 86400000),
+        hours: Math.floor((safe / 3600000) % 24),
+        minutes: Math.floor((safe / 60000) % 60),
+        seconds: Math.floor((safe / 1000) % 60),
       });
     };
 
     updateCountdown();
     const timer = setInterval(updateCountdown, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
   const toggleMusic = async () => {
     if (!audioRef.current) return;
 
-    try {
-      if (playing) {
-        audioRef.current.pause();
-        setPlaying(false);
-      } else {
+    if (playing) {
+      audioRef.current.pause();
+      setPlaying(false);
+    } else {
+      try {
         await audioRef.current.play();
         setPlaying(true);
+      } catch {
+        alert("Please add your music file to the public folder first.");
       }
-    } catch {
-      alert("We'll add your wedding music in the next step!");
     }
   };
 
-  const gold = "#a17b50";
-
   return (
-    <main style={{
-      background: "#f8f3eb",
-      color: "#66513e",
-      fontFamily: "Georgia, serif",
-      textAlign: "center",
-      minHeight: "100vh",
-      overflow: "hidden"
-    }}>
+    <main className="wedding">
+      <audio ref={audioRef} src="/music.mp3" loop />
 
-      <audio
-        ref={audioRef}
-        src="/music.mp3"
-        loop
-        onPause={() => setPlaying(false)}
-        onPlay={() => setPlaying(true)}
-      />
+      <div className="glow" />
 
-      {/* Welcome screen */}
-      <section style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "35px 18px",
-        background: "radial-gradient(circle, #fffdf8, #eee2d1)"
-      }}>
-        <div style={{
-          width: "100%",
-          maxWidth: "650px",
-          padding: "45px 22px",
-          border: "1px solid #c9ad83",
-          outline: "5px double #e1d0b8",
-          outlineOffset: "-12px",
-          background: "rgba(255,253,248,0.85)"
-        }}>
-          <div style={{ fontSize: "42px", color: gold }}>
-            ❀ ✿ ❀
+      {!opened ? (
+        <section className="cover">
+          <div className="corner top-left">❧</div>
+          <div className="corner top-right">❧</div>
+          <div className="corner bottom-left">❧</div>
+          <div className="corner bottom-right">❧</div>
+
+          <div className="cover-content">
+            <p className="eyebrow">TOGETHER WITH OUR FAMILIES</p>
+            <div className="ornament">✦ ─── ❀ ─── ✦</div>
+            <p className="small-title">THE WEDDING CELEBRATION OF</p>
+
+            <h1>Sadiya</h1>
+            <div className="ampersand">&</div>
+            <h1>Waseem</h1>
+
+            <div className="ornament">✦ ─── ❀ ─── ✦</div>
+            <p className="cover-date">20 · DECEMBER · 2026</p>
+
+            <button className="open-button" onClick={() => setOpened(true)}>
+              OPEN INVITATION <span>✧</span>
+            </button>
+
+            <p className="bottom-note">A beautiful beginning, by the grace of Allah</p>
           </div>
+        </section>
+      ) : (
+        <>
+          <header className="hero">
+            <p className="eyebrow">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+            <div className="ornament">✦ ❀ ✦</div>
+            <p className="small-title">WITH THE BLESSINGS OF ALLAH</p>
+            <h1>Sadiya <span>&</span> Waseem</h1>
+            <p className="hero-text">
+              Two hearts, one beautiful journey.
+              <br />
+              We invite you to celebrate our special day.
+            </p>
+            <div className="gold-line" />
+            <p className="cover-date">SUNDAY · 20 DECEMBER 2026</p>
+          </header>
 
-          <p style={{
-            letterSpacing: "4px",
-            fontSize: "11px",
-            marginTop: "25px"
-          }}>
-            TOGETHER WITH OUR FAMILIES
-          </p>
+          <section className="invitation section">
+            <p className="eyebrow">A JOYOUS OCCASION</p>
+            <div className="ornament">❀</div>
+            <h2>With love & gratitude</h2>
+            <p>
+              With the blessings of Allah and the love of our families,
+              we request the pleasure of your company as we begin
+              our new chapter together.
+            </p>
+            <div className="names">Sadiya & Waseem</div>
+            <p className="dua">
+              May Allah bless our union with love, mercy and happiness.
+            </p>
+          </section>
 
-          <p style={{
-            fontSize: "19px",
-            fontStyle: "italic",
-            color: gold
-          }}>
-            We invite you to celebrate
-          </p>
-
-          <h1 style={{
-            fontSize: "clamp(43px, 10vw, 72px)",
-            lineHeight: "1.25",
-            fontWeight: "normal",
-            fontStyle: "italic",
-            color: "#96734f",
-            margin: "25px 0"
-          }}>
-            Sadiya
-            <br />
-            <span style={{ fontSize: "35px" }}>&</span>
-            <br />
-            Waseem
-          </h1>
-
-          <div style={{ fontSize: "30px", color: gold }}>❦</div>
-
-          <p style={{
-            letterSpacing: "3px",
-            fontSize: "12px",
-            marginTop: "25px"
-          }}>
-            SUNDAY · 20 DECEMBER 2026
-          </p>
-
-          <p style={{ fontStyle: "italic", fontSize: "16px" }}>
-            A lifetime begins with a beautiful moment
-          </p>
-
-          <button
-            onClick={() => {
-              setOpened(true);
-              setTimeout(() => {
-                document.getElementById("invitation")?.scrollIntoView({
-                  behavior: "smooth"
-                });
-              }, 100);
-            }}
-            style={{
-              marginTop: "25px",
-              padding: "16px 30px",
-              background: gold,
-              color: "white",
-              border: "none",
-              letterSpacing: "2px",
-              cursor: "pointer",
-              fontFamily: "Georgia, serif"
-            }}
-          >
-            OPEN INVITATION ♡
-          </button>
-
-          <p style={{
-            fontSize: "11px",
-            letterSpacing: "3px",
-            marginTop: "35px",
-            color: gold
-          }}>
-            WITH LOVE, SADIYA & WASEEM
-          </p>
-        </div>
-      </section>
-
-      {/* Invitation details */}
-      <section
-        id="invitation"
-        style={{
-          padding: "75px 20px",
-          background: "#fffdf8"
-        }}
-      >
-        <div style={{ fontSize: "38px", color: gold }}>❀</div>
-
-        <p style={{ letterSpacing: "4px", fontSize: "11px" }}>
-          THE BEGINNING OF FOREVER
-        </p>
-
-        <h2 style={{
-          fontSize: "35px",
-          fontWeight: "normal",
-          fontStyle: "italic",
-          color: gold
-        }}>
-          With joyful hearts
-        </h2>
-
-        <p style={{
-          maxWidth: "480px",
-          margin: "25px auto",
-          lineHeight: "2",
-          fontSize: "16px"
-        }}>
-          We request the pleasure of your company and blessings
-          as we begin our beautiful journey together.
-          Your presence will make our special day even more memorable.
-        </p>
-
-        <div style={{
-          maxWidth: "500px",
-          margin: "45px auto",
-          padding: "30px 15px",
-          borderTop: "1px solid #d8c4a7",
-          borderBottom: "1px solid #d8c4a7"
-        }}>
-          <p style={{ letterSpacing: "3px", fontSize: "12px" }}>
-            SAVE THE DATE
-          </p>
-
-          <h2 style={{
-            fontSize: "38px",
-            fontWeight: "normal",
-            color: gold
-          }}>
-            20 · 12 · 2026
-          </h2>
-
-          <p style={{ fontSize: "18px" }}>Sunday | 11:30 AM</p>
-        </div>
-
-        <div style={{ fontSize: "32px", color: gold }}>❦</div>
-      </section>
-
-      {/* Countdown */}
-      <section style={{
-        padding: "65px 15px",
-        background: "#eee4d6"
-      }}>
-        <p style={{ letterSpacing: "4px", fontSize: "11px" }}>
-          COUNTING DOWN TO OUR BIG DAY
-        </p>
-
-        <h2 style={{
-          fontSize: "32px",
-          fontStyle: "italic",
-          fontWeight: "normal",
-          color: gold
-        }}>
-          Until we say "I do"
-        </h2>
-
-        <div style={{
-          display: "flex",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          gap: "12px",
-          marginTop: "30px"
-        }}>
-          {[
-            ["DAYS", timeLeft.days],
-            ["HOURS", timeLeft.hours],
-            ["MINUTES", timeLeft.minutes],
-            ["SECONDS", timeLeft.seconds]
-          ].map(([label, value]) => (
-            <div key={label} style={{
-              background: "#fffdf8",
-              padding: "18px 12px",
-              minWidth: "65px",
-              border: "1px solid #d7c2a5"
-            }}>
-              <div style={{
-                fontSize: "29px",
-                color: gold
-              }}>
-                {String(value).padStart(2, "0")}
-              </div>
-              <div style={{
-                fontSize: "9px",
-                letterSpacing: "1px",
-                marginTop: "7px"
-              }}>
-                {label}
-              </div>
+          <section className="countdown-section section">
+            <p className="eyebrow">SAVE THE DATE</p>
+            <h2>Counting down to forever</h2>
+            <div className="countdown">
+              {["days", "hours", "minutes", "seconds"].map((item) => (
+                <div className="count-box" key={item}>
+                  <strong>{timeLeft[item] ?? "00"}</strong>
+                  <span>{item}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+            <p className="date-line">20 December 2026 · 11:30 AM</p>
+          </section>
 
-      {/* Venue */}
-      <section style={{
-        padding: "75px 20px",
-        background: "#fffdf8"
-      }}>
-        <div style={{ fontSize: "38px", color: gold }}>✿</div>
+          <section className="venue section">
+            <p className="eyebrow">JOIN US FOR THE CELEBRATION</p>
+            <div className="ornament">✧ ❀ ✧</div>
+            <h2>The Wedding</h2>
+            <h3>Kabba Convention Hall</h3>
+            <p>
+              St. Anne's High School, Near Bypass,
+              <br />
+              Kolar – 563101
+            </p>
+            <p className="date-line">Sunday, 20 December 2026</p>
+            <p className="date-line">11:30 AM</p>
 
-        <p style={{ letterSpacing: "4px", fontSize: "11px" }}>
-          JOIN US AT
-        </p>
+            <a
+              className="gold-button"
+              href="https://www.google.com/maps/search/?api=1&query=Kabba+Convention+Hall+St+Annes+High+School+Near+Bypass+Kolar+563101"
+              target="_blank"
+              rel="noreferrer"
+            >
+              VIEW LOCATION ↗
+            </a>
+          </section>
 
-        <h2 style={{
-          fontSize: "34px",
-          fontStyle: "italic",
-          fontWeight: "normal",
-          color: gold
-        }}>
-          The Wedding Venue
-        </h2>
+          <section className="contact section">
+            <div className="ornament">❀</div>
+            <h2>We look forward to seeing you</h2>
+            <p>Your presence and duas mean the world to us.</p>
+            <p className="eyebrow">FOR ANY QUERIES</p>
+            <div className="contacts">
+              <a href="tel:+916360021841">+91 63600 21841</a>
+              <a href="tel:7893406576">7893406576</a>
+            </div>
+            <div className="ornament">✦ ─── ❀ ─── ✦</div>
+            <p className="footer-names">Sadiya & Waseem</p>
+            <p className="footer-date">20 · 12 · 2026</p>
+          </section>
 
-        <h3 style={{ fontSize: "22px", fontWeight: "normal" }}>
-          Kabba Convention Hall
-        </h3>
+          <button className="music-button" onClick={toggleMusic}>
+            {playing ? "Ⅱ PAUSE MUSIC" : "♫ PLAY MUSIC"}
+          </button>
+        </>
+      )}
 
-        <p style={{ lineHeight: "2", fontSize: "15px" }}>
-          St. Anne's High School,
-          <br />
-          Near Bypass,
-          <br />
-          Kolar – 563101
-        </p>
+      <style jsx global>{`
+        * { box-sizing: border-box; }
 
-        <a
-          href="https://www.google.com/maps/search/?api=1&query=Kabba+Convention+Hall+St+Annes+High+School+Near+Bypass+Kolar+563101"
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            display: "inline-block",
-            marginTop: "20px",
-            padding: "14px 25px",
-            background: gold,
-            color: "white",
-            textDecoration: "none",
-            letterSpacing: "1px",
-            fontSize: "12px"
-          }}
-        >
-          VIEW LOCATION ON MAP
-        </a>
-      </section>
+        body {
+          margin: 0;
+          background: #f6eee5;
+          color: #4c1826;
+          font-family: Georgia, "Times New Roman", serif;
+        }
 
-      {/* Contacts */}
-      <section style={{
-        padding: "65px 20px",
-        background: "#eee4d6"
-      }}>
-        <div style={{ fontSize: "35px", color: gold }}>❀</div>
+        .wedding {
+          min-height: 100vh;
+          overflow: hidden;
+          background: #f6eee5;
+          position: relative;
+        }
 
-        <h2 style={{
-          fontSize: "31px",
-          fontStyle: "italic",
-          fontWeight: "normal"
-        }}>
-          We would love to hear from you
-        </h2>
+        .cover {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 55px 22px;
+          position: relative;
+          color: #f8e9d1;
+          background:
+            radial-gradient(ellipse at center, #782d40 0%, #4c1728 65%, #2e101b 100%);
+        }
 
-        <p style={{ letterSpacing: "2px", fontSize: "11px" }}>
-          FOR ANY QUERIES
-        </p>
+        .cover:before, .cover:after {
+          content: "";
+          position: absolute;
+          inset: 18px;
+          border: 1px solid #c8a66c;
+          pointer-events: none;
+        }
 
-        <p style={{ marginTop: "25px" }}>
-          <a href="tel:+916360021841" style={{ color: gold }}>
-            +91 63600 21841
-          </a>
-        </p>
+        .cover:after {
+          inset: 25px;
+          border-color: rgba(200,166,108,.35);
+        }
 
-        <p>
-          <a href="tel:7893406576" style={{ color: gold }}>
-            7893406576
-          </a>
-        </p>
+        .corner {
+          position: absolute;
+          color: #d8b77c;
+          font-size: 54px;
+          line-height: 1;
+        }
 
-        <button
-          onClick={toggleMusic}
-          style={{
-            marginTop: "25px",
-            padding: "14px 25px",
-            background: "#987b59",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            letterSpacing: "1px",
-            fontFamily: "Georgia, serif"
-          }}
-        >
-          {playing ? "Ⅱ PAUSE MUSIC" : "♫ PLAY WEDDING MUSIC"}
-        </button>
+        .top-left { top: 35px; left: 35px; }
+        .top-right { top: 35px; right: 35px; transform: scaleX(-1); }
+        .bottom-left { bottom: 35px; left: 35px; transform: scaleY(-1); }
+        .bottom-right { bottom: 35px; right: 35px; transform: scale(-1); }
 
-        <div style={{
-          fontSize: "38px",
-          color: gold,
-          marginTop: "45px"
-        }}>
-          ❀ ❦ ❀
-        </div>
+        .cover-content { max-width: 650px; width: 100%; position: relative; z-index: 1; }
 
-        <p style={{
-          letterSpacing: "3px",
-          fontSize: "11px"
-        }}>
-          FOREVER BEGINS HERE
-        </p>
+        .eyebrow {
+          font-family: Arial, sans-serif;
+          letter-spacing: 4px;
+          font-size: 10px;
+          line-height: 1.8;
+          color: #ad8751;
+        }
 
-        <p style={{
-          fontStyle: "italic",
-          fontSize: "18px",
-          color: gold
-        }}>
-          Sadiya & Waseem
-        </p>
-      </section>
+        .cover .eyebrow, .cover .small-title { color: #e1c798; }
+
+        .small-title {
+          font-family: Arial, sans-serif;
+          letter-spacing: 3px;
+          font-size: 10px;
+          margin: 25px 0;
+        }
+
+        .cover h1 {
+          font-size: clamp(58px, 12vw, 100px);
+          font-weight: normal;
+          font-style: italic;
+          line-height: .95;
+          margin: 12px 0;
+          color: #f5dfbd;
+        }
+
+        .ampersand {
+          font-size: 36px;
+          font-style: italic;
+          color: #d7b77d;
+          margin: 15px 0;
+        }
+
+        .ornament {
+          color: #b88c51;
+          font-size: 22px;
+          margin: 25px 0;
+          letter-spacing: 4px;
+        }
+
+        .cover .ornament { color: #d9b879; }
+
+        .cover-date {
+          letter-spacing: 4px;
+          font-family: Arial, sans-serif;
+          font-size: 11px;
+          color: #e7d1ad;
+          margin: 28px 0;
+        }
+
+        .open-button, .gold-button {
+          display: inline-block;
+          border: 1px solid #d5b477;
+          background: transparent;
+          color: #f3dfbd;
+          padding: 16px 30px;
+          letter-spacing: 3px;
+          font-size: 10px;
+          cursor: pointer;
+          text-decoration: none;
+          transition: .3s;
+        }
+
+        .open-button:hover, .gold-button:hover {
+          background: #d5b477;
+          color: #421725;
+        }
+
+        .open-button span { margin-left: 12px; }
+        .bottom-note { color: #d7bd9c; font-size: 12px; font-style: italic; margin-top: 40px; }
+
+        .hero {
+          text-align: center;
+          padding: 100px 22px 90px;
+          color: #f5e6d0;
+          background: linear-gradient(140deg, #35121f, #702b3e, #3b1422);
+          position: relative;
+        }
+
+        .hero h1 {
+          font-size: clamp(42px, 9vw, 78px);
+          font-weight: normal;
+          font-style: italic;
+          margin: 22px 0;
+          color: #f3dfbd;
+        }
+
+        .hero h1 span { color: #c9a66b; }
+        .hero-text { color: #ead8c0; font-size: 16px; line-height: 2; }
+        .gold-line { width: 75px; height: 1px; background: #c9a66b; margin: 30px auto; }
+
+        .section {
+          text-align: center;
+          padding: 75px 22px;
+          max-width: 850px;
+          margin: auto;
+        }
+
+        .section h2 {
+          font-size: clamp(30px, 6vw, 43px);
+          font-weight: normal;
+          font-style: italic;
+          color: #541d2d;
+          margin: 15px 0 25px;
+        }
+
+        .invitation p:not(.eyebrow):not(.dua) {
+          max-width: 570px;
+          margin: 20px auto;
+          color: #755c52;
+          font-size: 16px;
+          line-height: 2;
+        }
+
+        .names {
+          color: #9c7040;
+          font-size: 35px;
+          font-style: italic;
+          margin: 30px 0;
+        }
+
+        .dua { color: #9c7040; font-style: italic; font-size: 14px; }
+
+        .countdown-section {
+          max-width: none;
+          background: #eadbc9;
+          padding: 75px 15px;
+        }
+
+        .countdown {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin: 35px auto;
+        }
+
+        .count-box {
+          width: 105px;
+          padding: 20px 8px;
+          border: 1px solid #b38b59;
+          background: rgba(255,255,255,.25);
+        }
+
+        .count-box strong {
+          display: block;
+          font-size: 35px;
+          font-weight: normal;
+          color: #581e30;
+        }
+
+        .count-box span {
+          display: block;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font: 9px Arial, sans-serif;
+          color: #88694c;
+          margin-top: 8px;
+        }
+
+        .date-line {
+          color: #946b43;
+          letter-spacing: 2px;
+          font-size: 12px;
+          margin: 20px 0;
+        }
+
+        .venue {
+          padding-top: 90px;
+          padding-bottom: 90px;
+        }
+
+        .venue h3 {
+          color: #8e633d;
+          font-size: 24px;
+          font-weight: normal;
+          margin-top: 35px;
+        }
+
+        .venue p:not(.eyebrow):not(.date-line) {
+          color: #755c52;
+          line-height: 2;
+        }
+
+        .gold-button {
+          background: #571d30;
+          color: #f7e8d1;
+          margin-top: 20px;
+        }
+
+        .contact {
+          max-width: none;
+          background: #3d1524;
+          color: #f4e5cf;
+          padding: 75px 20px;
+        }
+
+        .contact h2 { color: #f1dfc2; }
+        .contact p { color: #d8c0a1; line-height: 1.8; }
+        .contact .eyebrow { margin-top: 35px; }
+
+        .contacts {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 20px;
+          margin: 25px 0;
+        }
+
+        .contacts a {
+          color: #f1d9ae;
+          border-bottom: 1px solid #b38b59;
+          padding: 8px;
+          text-decoration: none;
+        }
+
+        .footer-names { font-size: 30px; font-style: italic; }
+        .footer-date { letter-spacing: 4px; font-size: 10px; }
+
+        .music-button {
+          position: fixed;
+          bottom: 18px;
+          right: 18px;
+          z-index: 5;
+          border: 1px solid #d4b47c;
+          border-radius: 30px;
+          padding: 13px 19px;
+          color: #f5e4c8;
+          background: #501a2c;
+          font-size: 10px;
+          letter-spacing: 1px;
+          cursor: pointer;
+          box-shadow: 0 5px 20px #0002;
+        }
+
+        @media (max-width: 500px) {
+          .corner { font-size: 35px; }
+          .top-left { top: 35px; left: 28px; }
+          .top-right { top: 35px; right: 28px; }
+          .bottom-left { bottom: 35px; left: 28px; }
+          .bottom-right { bottom: 35px; right: 28px; }
+          .section { padding: 60px 20px; }
+          .count-box { width: 76px; padding: 16px 5px; }
+          .count-box strong { font-size: 27px; }
+          .hero { padding: 80px 18px; }
+        }
+      `}</style>
     </main>
   );
 }
