@@ -1,1 +1,532 @@
-Create romantic luxury wedding invitation homepage
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sadiya & Waseem | Wedding Invitation</title>
+<meta name="description" content="Join us to celebrate the wedding of Sadiya and Waseem on 20 December 2026 in Kolar.">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #faf6ef;
+  --gold: #b18b55;
+  --dark: #393027;
+  --pink: #eadbd5;
+  --white: #fffdf9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--dark);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+}
+
+nav {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+  padding: 20px 12px;
+  background: rgba(250,246,239,.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #d8c7aa;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--dark);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: .3s;
+}
+
+nav a:hover { color: var(--gold); }
+
+section {
+  min-height: 100vh;
+  padding: 110px 22px 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  scroll-margin-top: 50px;
+}
+
+.hero {
+  min-height: 100vh;
+  position: relative;
+  color: white;
+  background:
+    linear-gradient(rgba(37,28,24,.38),rgba(37,28,24,.58)),
+    url('/wedding-bg.jpg') center/cover no-repeat,
+    #8b7869;
+}
+
+.hero-content {
+  max-width: 850px;
+  padding: 30px 15px;
+}
+
+.eyebrow {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font-size: 11px;
+  margin-bottom: 25px;
+}
+
+.script {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(60px, 10vw, 105px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.ampersand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 35px;
+  color: #e5c99b;
+  margin: 5px;
+}
+
+.hero-date {
+  letter-spacing: 5px;
+  font-size: 13px;
+  margin-top: 25px;
+}
+
+.gold-line {
+  width: 90px;
+  height: 1px;
+  background: var(--gold);
+  margin: 25px auto;
+}
+
+.small-title {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(42px, 7vw, 66px);
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 29px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 13px;
+  line-height: 2;
+  color: #71675e;
+}
+
+.content {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
+
+.families {
+  background: var(--cream);
+}
+
+.family-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 35px;
+  margin-top: 45px;
+}
+
+.family-card {
+  background: var(--white);
+  border: 1px solid #e6d9c7;
+  padding: 40px 20px;
+}
+
+.family-card p { margin: 8px 0; }
+
+.remembrance {
+  margin: 35px auto 0;
+  max-width: 580px;
+  padding: 20px;
+  border-top: 1px solid #d8c7aa;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-style: italic;
+}
+
+.event {
+  background: #f0e5dd;
+}
+
+.event-card {
+  max-width: 650px;
+  margin: 35px auto;
+  padding: 45px 25px;
+  border: 1px solid #cbb58f;
+  background: rgba(255,253,249,.65);
+}
+
+.event-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  margin: 20px 0;
+}
+
+.event-time {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+
+#countdown {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 35px auto;
+  flex-wrap: wrap;
+}
+
+.time-box strong {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 400;
+}
+
+.time-box span {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.venue {
+  background: var(--cream);
+}
+
+.venue-card {
+  background: white;
+  border: 1px solid #e6d9c7;
+  padding: 45px 25px;
+  max-width: 650px;
+  margin: 30px auto;
+}
+
+.address {
+  margin: 20px auto;
+  max-width: 420px;
+}
+
+.map-button {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 15px 28px;
+  color: white;
+  background: var(--gold);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.join {
+  background: #f0e5dd;
+}
+
+.join-card {
+  max-width: 700px;
+  margin: auto;
+  padding: 55px 25px;
+  border: 1px solid #cbb58f;
+  background: rgba(255,253,249,.65);
+}
+
+.join .script {
+  font-size: clamp(50px, 9vw, 80px);
+  color: var(--gold);
+}
+
+.music-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 101;
+  border: 1px solid var(--gold);
+  background: var(--white);
+  color: var(--dark);
+  border-radius: 50px;
+  padding: 13px 18px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 28px;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+@media(max-width:600px) {
+  nav {
+    gap: 0;
+    justify-content: space-around;
+    padding: 17px 4px;
+  }
+  nav a {
+    font-size: 8px;
+    letter-spacing: .7px;
+  }
+  section { padding: 100px 18px 60px; }
+  .family-grid { grid-template-columns: 1fr; gap: 15px; }
+  #countdown { gap: 17px; }
+  .time-box strong { font-size: 34px; }
+  .music-button { bottom: 12px; right: 12px; }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#families">Families</a>
+  <a href="#event">Event</a>
+  <a href="#venue">Venue</a>
+  <a href="#join">Join Us</a>
+</nav>
+
+<!-- HOME -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <p class="eyebrow" style="color:white">
+      Bismillahir Rahmanir Raheem
+    </p>
+    <p style="color:white;letter-spacing:4px;font-size:11px">
+      TOGETHER WITH OUR FAMILIES
+    </p>
+    <div class="gold-line" style="background:#e5c99b"></div>
+
+    <div class="script">Sadiya</div>
+    <div class="ampersand">&</div>
+    <div class="script">Waseem</div>
+
+    <div class="gold-line" style="background:#e5c99b"></div>
+    <p style="color:white;letter-spacing:4px">
+      REQUEST THE HONOUR OF YOUR PRESENCE
+    </p>
+    <p class="hero-date" style="color:white">
+      20 · DECEMBER · 2026
+    </p>
+    <p style="color:white;margin-top:15px">
+      Kolar, Karnataka
+    </p>
+  </div>
+</section>
+
+<!-- FAMILIES -->
+<section class="families" id="families">
+  <div class="content">
+    <p class="small-title">With the blessings of our families</p>
+    <h2>Our Families</h2>
+    <div class="gold-line"></div>
+
+    <div class="family-grid">
+      <div class="family-card">
+        <p class="small-title">The Bride</p>
+        <h3>Sadiya Siddequa</h3>
+        <p>Daughter of</p>
+        <p>Late Syed Khader Mohyudeen</p>
+        <p>&</p>
+        <p>Ishrath Unnisa</p>
+      </div>
+
+      <div class="family-card">
+        <p class="small-title">The Groom</p>
+        <h3>Waseem Ahamed</h3>
+        <p>Son of</p>
+        <p>Shaikh Mahaboob</p>
+        <p>&</p>
+        <p>Shaik Siraj Unnisa</p>
+      </div>
+    </div>
+
+    <div class="remembrance">
+      In loving memory of those who are no longer with us.
+      May Allah grant our departed loved ones Jannatul Firdaus.
+      Ameen.
+    </div>
+  </div>
+</section>
+
+<!-- EVENT -->
+<section class="event" id="event">
+  <div class="content">
+    <p class="small-title">Save the date</p>
+    <h2>The Wedding</h2>
+    <div class="gold-line"></div>
+
+    <div class="event-card">
+      <p style="letter-spacing:3px">SUNDAY</p>
+      <div class="event-date">20 December 2026</div>
+      <p class="event-time">CEREMONY BEGINS AT 11:30 AM</p>
+      <div class="gold-line"></div>
+      <p>We would be delighted to have you celebrate this special day with us.</p>
+    </div>
+
+    <p class="small-title">Counting down to forever</p>
+    <div id="countdown">
+      <div class="time-box">
+        <strong id="days">00</strong><span>Days</span>
+      </div>
+      <div class="time-box">
+        <strong id="hours">00</strong><span>Hours</span>
+      </div>
+      <div class="time-box">
+        <strong id="minutes">00</strong><span>Minutes</span>
+      </div>
+      <div class="time-box">
+        <strong id="seconds">00</strong><span>Seconds</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE -->
+<section class="venue" id="venue">
+  <div class="content">
+    <p class="small-title">Where we celebrate</p>
+    <h2>The Venue</h2>
+    <div class="gold-line"></div>
+
+    <div class="venue-card">
+      <h3>Kabba Convention Hall</h3>
+      <p class="address">
+        St. Anne's High School,<br>
+        Near Bypass,<br>
+        Kolar, Karnataka – 563101
+      </p>
+
+      <a class="map-button"
+      href="https://www.google.com/maps/place/KAABA+Convention+Centre/@13.128106,78.1149706,17z/data=!3m1!4b1!4m6!3m5!1s0x3badf087451e9b35:0x68c034a374dccf!8m2!3d13.128106!4d78.1175455!16s%2Fg%2F11bwqlppbr"
+      target="_blank" rel="noopener">
+        Get Directions
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN US -->
+<section class="join" id="join">
+  <div class="join-card">
+    <p class="small-title">A day to remember</p>
+    <div class="script">Join Us</div>
+    <div class="gold-line"></div>
+
+    <h2 style="font-size:42px">Your presence is our blessing</h2>
+
+    <p>
+      We warmly invite you to be part of our special day
+      and share in the happiness of our new beginning.
+    </p>
+
+    <div class="gold-line"></div>
+
+    <p style="font-family:'Cormorant Garamond',serif;font-size:23px;color:#9b784b">
+      Sadiya & Waseem
+    </p>
+
+    <p style="margin-top:20px">
+      May Allah bless our union with love, mercy and barakah.
+    </p>
+
+    <p style="margin-top:25px;font-size:10px;letter-spacing:2px">
+      RSVP DETAILS WILL BE UPDATED SOON
+    </p>
+  </div>
+</section>
+
+<footer>
+  MADE WITH LOVE · SADIYA & WASEEM · 2026
+</footer>
+
+<!-- MUSIC -->
+<audio id="weddingMusic" loop>
+  <source src="/wedding-music.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-button" id="musicButton" onclick="toggleMusic()">
+  ♫ Play Music
+</button>
+
+<script>
+const weddingDate = new Date("2026-12-20T11:30:00");
+
+function updateCountdown() {
+  const now = new Date();
+  const difference = weddingDate - now;
+
+  if (difference <= 0) {
+    document.getElementById("countdown").innerHTML =
+      "<p>Today is the day! Alhamdulillah ❤️</p>";
+    return;
+  }
+
+  const days = Math.floor(difference / 86400000);
+  const hours = Math.floor((difference % 86400000) / 3600000);
+  const minutes = Math.floor((difference % 3600000) / 60000);
+  const seconds = Math.floor((difference % 60000) / 1000);
+
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = hours;
+  document.getElementById("minutes").textContent = minutes;
+  document.getElementById("seconds").textContent = seconds;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+const music = document.getElementById("weddingMusic");
+const musicButton = document.getElementById("musicButton");
+
+async function toggleMusic() {
+  if (music.paused) {
+    try {
+      await music.play();
+      musicButton.textContent = "♫ Pause Music";
+    } catch (error) {
+      musicButton.textContent = "♫ Music coming soon";
+    }
+  } else {
+    music.pause();
+    musicButton.textContent = "♫ Play Music";
+  }
+}
+</script>
+
+</body>
+</html>
